@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .bg-space-dark {
+    background-color: #050810;
+    background-image: radial-gradient(circle at 50% 0%, #1e1b4b 0%, transparent 70%);
+  }
+  
+  .bg-space-grid {
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  }
+}
