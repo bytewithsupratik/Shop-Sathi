@@ -4,8 +4,10 @@ import { ShoppingCart, Bell, User, Search, Store, Home, MapPin, Moon, Sun } from
 import LandingPage from './pages/LandingPage';
 import ShopDiscovery from './pages/ShopDiscovery';
 import ProductPage from './pages/ProductPage';
-import Dashboard from './pages/Dashboard';
+import SellerDashboard from './pages/SellerDashboard';
 import CartCheckout from './pages/CartCheckout';
+import Register from './pages/Register';
+import Login from './pages/Login';
 import './index.css';
 
 function App() {
@@ -23,12 +25,14 @@ function App() {
 
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
 
-  // Don't show regular navbar on dashboard
+  // Don't show regular navbar on dashboard or auth pages
   const isDashboard = location.pathname.includes('/dashboard');
+  const isAuth = location.pathname.includes('/register') || location.pathname.includes('/login');
+  const hideNavAndFooter = isDashboard || isAuth;
 
   return (
     <div className="app-container">
-      {!isDashboard && (
+      {!hideNavAndFooter && (
         <nav className="navbar">
           <div className="container flex justify-between items-center">
             <Link to="/" className="logo flex items-center gap-2">
@@ -43,7 +47,7 @@ function App() {
 
             <div className="nav-links items-center">
               <Link to="/shops" className="nav-link">Explore</Link>
-              <Link to="/dashboard" className="nav-link">Sell</Link>
+              <Link to="/dashboard" target="_blank" rel="noopener noreferrer" className="nav-link">Sell</Link>
 
               <button onClick={toggleTheme} className="icon-btn" style={{ padding: '0.5rem', color: 'var(--text-secondary)' }}>
                 {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
@@ -57,15 +61,14 @@ function App() {
               <Link to="/cart" className="icon-btn relative" style={{ padding: '0.5rem', color: 'var(--text-secondary)' }}>
                 <ShoppingCart size={20} />
                 {cartCount > 0 && (
-                  <span className="absolute" style={{ top: '-5px', right: '-5px', backgroundColor: 'var(--primary-color)', color: 'white', fontSize: '0.75rem', width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' }}>
-                    {cartCount}
+                  <span className="absolute" style={{ top: '-5px', right: '-5px' }}>
                   </span>
                 )}
               </Link>
 
-              <button className="user-btn ml-2">
+              <Link to="/register" className="user-btn ml-2">
                 <User size={24} style={{ color: 'var(--text-secondary)' }} />
-              </button>
+              </Link>
             </div>
           </div>
         </nav>
@@ -76,12 +79,14 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/shops" element={<ShopDiscovery />} />
           <Route path="/product/:id" element={<ProductPage />} />
-          <Route path="/dashboard/*" element={<Dashboard />} />
+          <Route path="/dashboard/*" element={<SellerDashboard />} />
           <Route path="/cart" element={<CartCheckout />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </main>
 
-      {!isDashboard && (
+      {!hideNavAndFooter && (
         <footer className="footer text-center">
           <div className="container">
             <div className="grid grid-cols-4 gap-8 mb-8 text-left">

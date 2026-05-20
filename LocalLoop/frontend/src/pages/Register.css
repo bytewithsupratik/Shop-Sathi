@@ -1,0 +1,364 @@
+.register-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.register-left {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .register-left {
+    display: flex;
+    width: 50%;
+    background-color: #162D26;
+    position: relative;
+    overflow: hidden;
+    flex-direction: column;
+  }
+}
+
+.register-logo {
+  position: absolute;
+  top: 2rem;
+  left: 2.5rem;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.register-logo-icon {
+  background-color: #F97316;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: white;
+}
+
+.register-logo-text {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: bold;
+  letter-spacing: 0.025em;
+}
+
+.mockup-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+  margin-top: 3rem;
+}
+
+.phone-mockup {
+  width: 320px;
+  height: 650px;
+  background-color: black;
+  border-radius: 3rem;
+  border: 8px solid #1e293b;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
+  transform: translateY(10%);
+}
+
+.phone-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+}
+
+.phone-notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10rem;
+  height: 1.75rem;
+  background-color: #1e293b;
+  border-bottom-left-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
+  z-index: 20;
+}
+
+.testimonial-wrapper {
+  position: absolute;
+  bottom: 3rem;
+  left: 2.5rem;
+  z-index: 30;
+  width: 75%;
+  max-width: 420px;
+}
+
+.testimonial-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 2rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonial-quote {
+  font-size: 2.25rem;
+  color: #38BDF8;
+  font-family: serif;
+  line-height: 1;
+}
+
+.testimonial-text {
+  color: white;
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.625;
+  margin-bottom: 1.5rem;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.author-image {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  border: 2px solid #F97316;
+  object-fit: cover;
+}
+
+.author-name {
+  color: white;
+  font-weight: 600;
+}
+
+.author-title {
+  color: #cbd5e1;
+  font-size: 0.875rem;
+}
+
+.register-right {
+  width: 100%;
+  background-color: #F8FAFC;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 2rem;
+}
+
+@media (min-width: 640px) { .register-right { padding: 3rem 4rem; } }
+@media (min-width: 1024px) {
+  .register-right {
+    width: 50%;
+    padding: 3rem 6rem;
+  }
+}
+
+.mobile-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 1024px) { .mobile-logo { display: none; } }
+
+.mobile-logo-text {
+  color: #0f172a;
+  font-size: 1.25rem;
+  font-weight: bold;
+  letter-spacing: 0.025em;
+}
+
+.form-wrapper {
+  max-width: 28rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.form-title {
+  font-size: 2.25rem;
+  font-weight: bold;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.form-subtitle {
+  color: #475569;
+  margin-bottom: 2rem;
+}
+
+.role-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.role-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1rem;
+  border-radius: 0.75rem;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+  position: relative;
+  background-color: #E2E8F0;
+  color: #475569;
+}
+
+.role-card:hover {
+  background-color: #cbd5e1;
+}
+
+.role-card.active {
+  background-color: #E0F8F2;
+  border-color: #10B981;
+  color: #065F46;
+}
+
+.radio-indicator {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 9999px;
+  border: 2px solid #cbd5e1;
+}
+
+.role-card.active .radio-indicator {
+  border-color: #10B981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radio-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background-color: #10B981;
+}
+
+.role-icon { margin-bottom: 0.5rem; }
+.role-text { font-weight: 600; font-size: 0.875rem; }
+
+.input-group { margin-bottom: 1.25rem; }
+
+.input-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #334155;
+  margin-bottom: 0.25rem;
+}
+
+.input-field {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+  background-color: white;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #10B981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+.password-wrapper { position: relative; }
+
+.password-toggle {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+.password-toggle:hover { color: #475569; }
+
+.terms-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.terms-checkbox {
+  margin-top: 0.25rem;
+  width: 1rem;
+  height: 1rem;
+}
+
+.terms-text {
+  font-size: 0.875rem;
+  color: #475569;
+  line-height: 1.625;
+}
+
+.terms-link {
+  font-weight: 600;
+  color: #D95F18;
+}
+
+.terms-link:hover { text-decoration: underline; }
+
+.submit-btn {
+  width: 100%;
+  background: linear-gradient(to right, #F26419, #F97316);
+  color: white;
+  font-weight: 600;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(to right, #e35912, #ea580c);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.login-prompt {
+  text-align: center;
+  margin-top: 2rem;
+  color: #475569;
+  font-size: 0.875rem;
+}
+
+.login-link {
+  font-weight: 600;
+  color: #065F46;
+}
+
+.login-link:hover { text-decoration: underline; }

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, MapPin, Star, TrendingUp, ShieldCheck, HeartHandshake, Truck } from 'lucide-react';
-import { shops, categories, products } from '../data/mockData';
+import { Search, MapPin, Heart, Plus, Store, ShoppingCart, Shirt, Monitor, Utensils, Brush, ArrowRight } from 'lucide-react';
+import './LandingPage.css';
 
 const LandingPage = () => {
   const typeTarget = useRef(null);
@@ -10,10 +10,11 @@ const LandingPage = () => {
     // Check if Typed is loaded globally from index.html CDN
     if (window.Typed && typeTarget.current) {
       const typed = new window.Typed(typeTarget.current, {
-        strings: ["Sathi", "Grocery", "Food", "Fashion", "Electronics", "Handicrafts", "Beverages"],
-        typeSpeed: 100,
-        backSpeed: 150,
-        loop: true
+        strings: ["Local Businesses", "Neighborhood Stores", "Siliguri Markets", "Community Shops"],
+        typeSpeed: 60,
+        backSpeed: 40,
+        loop: true,
+        backDelay: 2000
       });
 
       // Cleanup on unmount
@@ -26,130 +27,204 @@ const LandingPage = () => {
   return (
     <div className="animate-fade-in">
       {/* Hero Section */}
-      <section className="hero">
+      <section className="landing-hero">
         <div className="container">
-          <div className="badge badge-accent mb-4">📍 Inspiria Knowledge Campus, Uttorayon Twp,Gaurcharan </div>
+          <div className="live-badge">
+            <span className="live-dot"></span> Live in Siliguri
+          </div>
 
-          <div className="typed mb-4">
-            <h1>
-              Shop <span ref={typeTarget} className="text-primary" />
+          <div className="mb-6">
+            <h1 className="hero-title-main">Digitally Empowering</h1>
+            <h1 className="hero-title-sub">
+              <span ref={typeTarget} />
             </h1>
           </div>
 
-          <p className="text-secondary mb-8 text-lg max-w-2xl mx-auto">
-            Discover and shop from your favorite local stores in Sevoke Road, Bidhan Market, and across Siliguri. Support your community.
+          <p className="hero-subtitle">
+            Discover, shop, and support the heartbeat of your neighborhood. Bringing the warmth of local commerce directly to your fingertips.
           </p>
 
-          <div className="search-bar">
-            <input type="text" className="search-input" placeholder="Search for groceries, momos, electronics in Siliguri..." />
-            <button className="search-btn">
-              <Search size={20} />
-            </button>
+          <div className="hero-search-container">
+            <Search size={20} color="#94a3b8" style={{ marginLeft: '0.5rem' }} />
+            <input type="text" className="hero-search-input" placeholder="What are you looking for today?" />
+            <div className="hero-location">
+              <MapPin size={14} />
+              Pradhan Nagar
+            </div>
+            <button className="hero-search-btn">Search</button>
           </div>
 
-          <div className="flex justify-center gap-4 mt-8">
-            <Link to="/shops" className="btn btn-primary">Explore Shops</Link>
-            <Link to="/dashboard" className="btn btn-outline">Register Shop</Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Categories */}
-      <section className="section bg-secondary">
-        <div className="container">
-          <h2 className="section-title">Shop by Category</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.map((cat, idx) => (
-              <div key={idx} className="card text-center p-6" style={{ cursor: 'pointer' }}>
-                <div className="mx-auto mb-4 w-12 h-12 flex items-center justify-center rounded-full" style={{ backgroundColor: `${cat.color}20`, color: cat.color }}>
-                  <span style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{cat.name[0]}</span>
-                </div>
-                <h3 className="text-sm font-semibold">{cat.name}</h3>
+          <div className="hero-categories">
+            <div className="category-item">
+              <div className="category-icon">
+                <ShoppingCart size={24} />
               </div>
-            ))}
+              <span className="category-label">Grocery</span>
+            </div>
+            <div className="category-item">
+              <div className="category-icon">
+                <Shirt size={24} />
+              </div>
+              <span className="category-label">Fashion</span>
+            </div>
+            <div className="category-item">
+              <div className="category-icon">
+                <Monitor size={24} />
+              </div>
+              <span className="category-label">Electronics</span>
+            </div>
+            <div className="category-item">
+              <div className="category-icon">
+                <Utensils size={24} />
+              </div>
+              <span className="category-label">Food</span>
+            </div>
+            <div className="category-item">
+              <div className="category-icon">
+                <Brush size={24} />
+              </div>
+              <span className="category-label">Handicrafts</span>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Featured Shops */}
-      <section className="section">
-        <div className="container">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="m-0">Featured Local Shops</h2>
-            <Link to="/shops" className="text-primary font-semibold">View All ➔</Link>
+      <section className="landing-section">
+        <div className="section-header">
+          <div>
+            <h2 className="section-title">Featured Shops</h2>
+            <p className="section-subtitle">Discover highly rated businesses in your area.</p>
           </div>
+          <Link to="/shops" className="view-all-link">View all shops</Link>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {shops.slice(0, 3).map(shop => (
-              <Link to={`/shops`} key={shop.id} className="card">
-                <div className="card-img-wrapper">
-                  <img src={shop.image} alt={shop.name} className="card-img" />
-                  {shop.verified && (
-                    <div className="absolute top-2 right-2 bg-white text-green-600 p-1 rounded-full shadow-md">
-                      <ShieldCheck size={18} />
-                    </div>
-                  )}
-                </div>
-                <div className="card-content">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-lg">{shop.name}</h3>
-                    <div className="flex items-center gap-1 text-sm font-bold text-yellow-500">
-                      <Star size={14} fill="currentColor" /> {shop.rating}
-                    </div>
-                  </div>
-                  <p className="text-secondary text-sm flex items-center gap-1 mb-3">
-                    <MapPin size={14} /> {shop.area}
-                  </p>
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="badge bg-secondary">{shop.category}</span>
-                    <span className="text-primary font-medium">{shop.deliveryTime}</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
+        <div className="featured-grid">
+          {/* Main Card */}
+          <Link to="/shops" className="featured-main-card block">
+            <img
+              src="https://img.etimg.com/thumb/width-1200,height-1200,imgsize-3317972,resizemode-75,msid-107438198/industry/cons-products/fmcg/quick-commerce-platforms-surge-rocks-neighborhood-grocery-stores.jpg"
+              alt="Grocery Store"
+              className="featured-img"
+            />
+            <div className="verified-badge">
+              <span style={{ color: '#F59E0B' }}>✔</span> Verified Local
+            </div>
+            <div className="featured-main-overlay">
+              <p style={{ fontSize: '0.75rem', marginBottom: '0.25rem', opacity: 0.9 }}>Pradhan Nagar</p>
+              <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.25rem' }}>HillCart Grocery</h3>
+              <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>⭐ 4.9 (120 reviews) • Groceries</p>
+            </div>
+          </Link>
+
+          {/* Right Column */}
+          <div className="right-column">
+            <Link to="/shops" className="featured-sub-card block">
+              <img
+                src="https://content.jdmagicbox.com/v2/comp/darjeeling/n4/9999px354.x354.230625100348.p6n4/catalogue/the-tea-shoppe-nehru-road-darjeeling-tea-stalls-8v36d0ry70.jpg"
+                alt="Tea Corner"
+                className="featured-img"
+              />
+              <div className="featured-sub-overlay">
+                <p style={{ fontSize: '0.7rem', marginBottom: '0.1rem', opacity: 0.9 }}>City Center</p>
+                <h3 style={{ fontSize: '1.125rem', fontWeight: 'bold' }}>The Tea Shoppe</h3>
+              </div>
+            </Link>
+
+            <Link to="/register" className="register-shop-card">
+              <Store size={28} className="mb-3" />
+              <h3 className="register-shop-title">Open your shop</h3>
+              <p className="register-shop-subtitle">Join 500+ local sellers.</p>
+              <span style={{ fontSize: '0.85rem', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                Register now <ArrowRight size={14} />
+              </span>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Why Choose Us */}
-      <section className="section bg-secondary">
-        <div className="container text-center">
-          <h2 className="section-title">Why Choose Shop Sathi?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-6">
-              <div className="w-16 h-16 mx-auto bg-orange-100 text-orange-500 rounded-full flex items-center justify-center mb-4">
-                <HeartHandshake size={32} />
-              </div>
-              <h3 className="mb-2">Support Local</h3>
-              <p className="text-secondary">Your money stays in Siliguri, helping local families and businesses grow.</p>
-            </div>
-            <div className="p-6">
-              <div className="w-16 h-16 mx-auto bg-green-100 text-green-500 rounded-full flex items-center justify-center mb-4">
-                <Truck size={32} />
-              </div>
-              <h3 className="mb-2">Superfast Delivery</h3>
-              <p className="text-secondary">Get products delivered from neighborhood stores in minutes, not days.</p>
-            </div>
-            <div className="p-6">
-              <div className="w-16 h-16 mx-auto bg-blue-100 text-blue-500 rounded-full flex items-center justify-center mb-4">
-                <ShieldCheck size={32} />
-              </div>
-              <h3 className="mb-2">Verified Sellers</h3>
-              <p className="text-secondary">Shop with confidence from trusted and verified local merchants.</p>
-            </div>
-          </div>
+      {/* Support Local Siliguri Section */}
+      <section className="support-section">
+        <div className="support-content">
+          <span className="support-badge">🤝 Community Initiative</span>
+          <h2 className="support-title">Support Local Siliguri</h2>
+          <p className="support-text">
+            Every purchase keeps our community thriving. Enjoy 0% platform fees on your first 3 local orders.
+          </p>
+          <button className="claim-btn">Claim Offer</button>
+        </div>
+        <div className="support-image-container">
+          <img
+            src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=600&transparent=1"
+            alt="Happy community members"
+            className="support-image"
+            style={{ borderRadius: '50%', objectFit: 'cover', height: '80%', bottom: '10%' }}
+          />
         </div>
       </section>
 
-      {/* Promotional Banner */}
-      <section className="section container">
-        <div className="rounded-2xl overflow-hidden relative p-12 flex items-center bg-gradient-1 text-white">
-          <div className="relative z-10 max-w-lg">
-            <h2 className="text-white text-3xl mb-4">Siliguri's Biggest Digital Mela!</h2>
-            <p className="mb-6 opacity-90 text-lg">Get up to 50% off from participating stores in Bidhan Market.</p>
-            <button className="btn bg-white text-orange-500">Shop Now</button>
+      {/* Trending Products */}
+      <section className="landing-section">
+        <div className="section-header">
+          <h2 className="section-title">Trending in your area</h2>
+        </div>
+
+        <div className="trending-grid">
+          {/* Product 1 */}
+          <div className="product-card">
+            <div className="product-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=400&q=80" alt="Tea" className="product-img" />
+              <button className="wishlist-btn"><Heart size={16} /></button>
+            </div>
+            <div className="product-shop">Darjeeling Tea Corner</div>
+            <h3 className="product-name">Premium First Flush Tea</h3>
+            <div className="product-bottom">
+              <div className="product-price">₹850</div>
+              <button className="add-btn"><Plus size={16} /></button>
+            </div>
           </div>
-          <div className="absolute right-0 top-0 h-full w-1/2 bg-black opacity-10" style={{ clipPath: 'polygon(20% 0, 100% 0, 100% 100%, 0 100%)' }}></div>
+
+          {/* Product 2 */}
+          <div className="product-card">
+            <div className="product-img-wrapper">
+              <img src="https://i0.wp.com/iimun.in/blog/wp-content/uploads/2025/10/Quels_sont_les_condiments_essentiels_avoir_dans_votre_garde-manger.jpg?fit=1080%2C650&ssl=1" alt="Spices" className="product-img" />
+              <button className="wishlist-btn"><Heart size={16} /></button>
+            </div>
+            <div className="product-shop">HillCart Grocery</div>
+            <h3 className="product-name">Organic Turmeric & Cumin</h3>
+            <div className="product-bottom">
+              <div className="product-price">₹240</div>
+              <button className="add-btn"><Plus size={16} /></button>
+            </div>
+          </div>
+
+          {/* Product 3 */}
+          <div className="product-card">
+            <div className="product-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=400&q=80" alt="Bowl" className="product-img" />
+              <button className="wishlist-btn"><Heart size={16} /></button>
+            </div>
+            <div className="product-shop">Siliguri Arts</div>
+            <h3 className="product-name">Handcrafted Clay Bowl</h3>
+            <div className="product-bottom">
+              <div className="product-price">₹450</div>
+              <button className="add-btn"><Plus size={16} /></button>
+            </div>
+          </div>
+
+          {/* Product 4 */}
+          <div className="product-card">
+            <div className="product-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1518843875459-f738682238a6?auto=format&fit=crop&w=400&q=80" alt="Greens" className="product-img" />
+              <button className="wishlist-btn"><Heart size={16} /></button>
+            </div>
+            <div className="product-shop">Green Valley Farm</div>
+            <h3 className="product-name">Farm Fresh Greens Bundle</h3>
+            <div className="product-bottom">
+              <div className="product-price">₹120</div>
+              <button className="add-btn"><Plus size={16} /></button>
+            </div>
+          </div>
         </div>
       </section>
     </div>

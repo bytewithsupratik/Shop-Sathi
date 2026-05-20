@@ -11,7 +11,7 @@ const Dashboard = () => {
       <aside className="sidebar">
         <Link to="/" className="flex items-center gap-2 mb-10 text-xl font-bold">
           <div className="bg-primary text-white p-2 rounded-lg">
-            <Store size={24} />
+            <Store size={28} />
           </div>
           Shop Sathi <span className="text-xs font-normal text-secondary bg-gray-100 px-2 py-1 rounded-full">Seller</span>
         </Link>
