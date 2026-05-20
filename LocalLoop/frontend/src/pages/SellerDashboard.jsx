@@ -203,7 +203,7 @@ const SellerDashboard = () => {
         <div className="dashboard-card">
           <div className="card-header">
             <h3 className="card-title">Recent Orders</h3>
-            <Link to="#" className="view-all-alerts" style={{ margin: 0 }}>View All ></Link>
+            <Link to="#" className="view-all-alerts" style={{ margin: 0 }}>View All &gt;</Link>
           </div>
         </div>
 

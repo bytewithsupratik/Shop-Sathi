@@ -10,6 +10,11 @@ const Register = () => {
 
   const handleRegister = (e) => {
     e.preventDefault();
+    const formData = new FormData(e.target);
+    const userName = formData.get('userName');
+    if (userName) {
+      localStorage.setItem('userName', userName);
+    }
     // Redirect based on role selection
     if (role === 'seller') {
       navigate('/dashboard');
@@ -27,16 +32,16 @@ const Register = () => {
           <div className="register-logo-icon">
             <Store size={24} />
           </div>
-          <span className="register-logo-text">LocalLoop</span>
+          <span className="register-logo-text">Shop Saathi</span>
         </div>
 
         {/* Center Mockup */}
         <div className="mockup-container">
           {/* Phone Mockup Frame */}
           <div className="phone-mockup">
-            <img 
-              src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=800" 
-              alt="Local Market" 
+            <img
+              src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=800"
+              alt="Local Market"
               className="phone-image"
             />
             {/* Notch */}
@@ -53,9 +58,9 @@ const Register = () => {
                 "Joining LocalLoop transformed my small grocery. It brings the warmth of my neighborhood shop straight to my customers' phones."
               </p>
               <div className="testimonial-author">
-                <img 
-                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" 
-                  alt="Priya Sharma" 
+                <img
+                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80"
+                  alt="Priya Sharma"
                   className="author-image"
                 />
                 <div>
@@ -70,7 +75,7 @@ const Register = () => {
 
       {/* Right Panel - Form */}
       <div className="register-right">
-        
+
         {/* Mobile Logo */}
         <div className="mobile-logo">
           <div className="register-logo-icon">
@@ -84,12 +89,12 @@ const Register = () => {
           <p className="form-subtitle">Join your local digital marketplace today.</p>
 
           <form onSubmit={handleRegister}>
-            
+
             {/* Role Selection */}
             <div>
               <p className="role-label">I want to join as a</p>
               <div className="role-grid">
-                
+
                 <button
                   type="button"
                   onClick={() => setRole('customer')}
@@ -118,11 +123,12 @@ const Register = () => {
             </div>
 
             {/* Inputs */}
-            <div className="input-group">
+            <div className="input-group" method="post">
               <label className="input-label">Full Name</label>
-              <input 
-                type="text" 
-                placeholder="e.g. Rahul Sen" 
+              <input
+                type="text"
+                name="userName"
+                placeholder="e.g. Rahul Sen"
                 className="input-field"
                 required
               />
@@ -130,9 +136,9 @@ const Register = () => {
 
             <div className="input-group">
               <label className="input-label">Email Address</label>
-              <input 
-                type="email" 
-                placeholder="you@example.com" 
+              <input
+                type="email"
+                placeholder="you@example.com"
                 className="input-field"
                 required
               />
@@ -140,9 +146,9 @@ const Register = () => {
 
             <div className="input-group">
               <label className="input-label">Phone Number</label>
-              <input 
-                type="tel" 
-                placeholder="+91 98765 43210" 
+              <input
+                type="tel"
+                placeholder="+91 98765 43210"
                 className="input-field"
                 required
               />
@@ -151,14 +157,14 @@ const Register = () => {
             <div className="input-group">
               <label className="input-label">Password</label>
               <div className="password-wrapper">
-                <input 
-                  type={showPassword ? "text" : "password"} 
-                  placeholder="••••••••" 
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
                   className="input-field"
                   style={{ paddingRight: '3rem' }}
                   required
                 />
-                <button 
+                <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="password-toggle"
@@ -170,8 +176,8 @@ const Register = () => {
 
             {/* Terms Checkbox */}
             <div className="terms-group">
-              <input 
-                type="checkbox" 
+              <input
+                type="checkbox"
                 id="terms"
                 className="terms-checkbox"
                 required

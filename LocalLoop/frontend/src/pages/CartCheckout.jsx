@@ -1,212 +1,251 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Trash2, Plus, Minus, ArrowRight, CheckCircle, MapPin, CreditCard } from 'lucide-react';
+import { Lock, MapPin, Store, CheckSquare, Square, ScanLine, CreditCard, Banknote, Target, CheckCircle } from 'lucide-react';
 import { products, shops } from '../data/mockData';
+import './CartCheckout.css';
 
 const CartCheckout = () => {
-  const [step, setStep] = useState('cart'); // cart, checkout, success
+  const [step, setStep] = useState('checkout'); // checkout, success
   const [cartItems, setCartItems] = useState([
-    { ...products[0], quantity: 1 },
-    { ...products[1], quantity: 1 }
+    { ...products[0], quantity: 1, name: "Premium Darjeeling First Flush", shopId: 1, price: 450, image: "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=400&q=80" },
+    { ...products[1], quantity: 2, name: "Wild Forest Honey", shopId: 2, price: 190, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtMxLwWVLPhoT9Ifqw9tcUU8aVtL745Dm2Xw&s" }
   ]);
+  const [paymentMethod, setPaymentMethod] = useState('upi');
+  const [supportMission, setSupportMission] = useState(true);
 
-  const updateQuantity = (id, delta) => {
-    setCartItems(items => 
-      items.map(item => {
-        if (item.id === id) {
-          const newQ = item.quantity + delta;
-          return newQ > 0 ? { ...item, quantity: newQ } : item;
-        }
-        return item;
-      })
-    );
-  };
-
-  const removeItem = (id) => {
-    setCartItems(items => items.filter(item => item.id !== id));
-  };
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
   const deliveryFee = 40;
-  const total = subtotal + (subtotal > 0 ? deliveryFee : 0);
+  const missionFee = supportMission ? 10 : 0;
+  const total = subtotal + (subtotal > 0 ? deliveryFee + missionFee : 0);
+  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   if (step === 'success') {
     return (
-      <div className="container py-20 text-center animate-fade-in max-w-lg">
-        <div className="w-24 h-24 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-          <CheckCircle size={48} />
-        </div>
-        <h2 className="text-3xl mb-4">Order Confirmed!</h2>
-        <p className="text-secondary mb-8 text-lg">
-          Your order has been placed successfully and sent to the local sellers. Delivery expected in 30-45 minutes.
-        </p>
-        <div className="bg-slate-50 dark:bg-slate-800 p-6 rounded-xl mb-8 border border-slate-200 dark:border-slate-700 text-left">
-          <div className="flex justify-between mb-2">
-            <span className="text-secondary">Order ID</span>
-            <span className="font-semibold">#LL-109482</span>
+      <div className="checkout-page flex flex-col items-center justify-center min-h-screen">
+        <div className="bg-white p-8 rounded-2xl shadow-lg max-w-lg w-full text-center animate-fade-in">
+          <div className="w-20 h-20 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+            <CheckCircle size={40} />
           </div>
-          <div className="flex justify-between">
-            <span className="text-secondary">Amount Paid</span>
-            <span className="font-semibold text-primary">₹{total}</span>
+          <h2 className="text-3xl font-bold mb-4 text-slate-800" style={{ fontFamily: 'Outfit' }}>Order Confirmed!</h2>
+          <p className="text-slate-500 mb-8 text-lg">
+            Your order has been placed successfully. Delivery expected in 30-45 minutes.
+          </p>
+          <div className="bg-slate-50 p-6 rounded-xl mb-8 border border-slate-200 text-left">
+            <div className="flex justify-between mb-3 text-slate-600">
+              <span>Order ID</span>
+              <span className="font-semibold text-slate-800">#LL-109482</span>
+            </div>
+            <div className="flex justify-between text-slate-600">
+              <span>Amount Paid</span>
+              <span className="font-semibold text-orange-600">₹{total}</span>
+            </div>
           </div>
+          <Link to="/" className="place-order-btn" style={{ textDecoration: 'none' }}>Continue Shopping</Link>
         </div>
-        <Link to="/" className="btn btn-primary w-full">Continue Shopping</Link>
       </div>
     );
   }
 
   return (
-    <div className="container py-8 animate-fade-in">
-      <h1 className="mb-8">Your Cart</h1>
-
-      {cartItems.length === 0 ? (
-        <div className="text-center py-16 card">
-          <h3 className="mb-4">Your cart is empty</h3>
-          <Link to="/shops" className="btn btn-primary">Discover Local Shops</Link>
+    <div className="checkout-page animate-fade-in">
+      <header className="checkout-header">
+        <Link to="/" className="checkout-header-logo">
+          <Store size={24} /> Shop Sathi
+        </Link>
+        <div className="secure-checkout-badge">
+          <Lock size={16} /> Secure Checkout
         </div>
-      ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-6">
-            {step === 'cart' && (
-              <div className="card p-6">
-                <div className="space-y-6">
-                  {cartItems.map(item => (
-                    <div key={item.id} className="flex gap-4 pb-6 border-b border-slate-100 dark:border-slate-700 last:border-0 last:pb-0">
-                      <img src={item.image} alt={item.name} className="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg" />
-                      <div className="flex-1 flex flex-col">
-                        <div className="flex justify-between items-start mb-1">
-                          <h4 className="text-lg m-0">{item.name}</h4>
-                          <button onClick={() => removeItem(item.id)} className="text-red-400 hover:text-red-600">
-                            <Trash2 size={18} />
-                          </button>
-                        </div>
-                        <p className="text-sm text-secondary mb-auto">Shop: {shops.find(s => s.id === item.shopId)?.name}</p>
-                        <div className="flex justify-between items-end mt-4">
-                          <span className="font-bold text-lg text-primary">₹{item.price}</span>
-                          <div className="flex items-center gap-3 bg-secondary rounded-lg p-1">
-                            <button onClick={() => updateQuantity(item.id, -1)} className="p-1 hover:bg-white dark:hover:bg-slate-700 rounded-md transition">
-                              <Minus size={16} />
-                            </button>
-                            <span className="font-medium w-4 text-center">{item.quantity}</span>
-                            <button onClick={() => updateQuantity(item.id, 1)} className="p-1 hover:bg-white dark:hover:bg-slate-700 rounded-md transition">
-                              <Plus size={16} />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+      </header>
 
-            {step === 'checkout' && (
-              <div className="space-y-6 animate-fade-in">
-                <div className="card p-6">
-                  <h3 className="flex items-center gap-2 mb-4 text-lg border-b border-slate-100 pb-4">
-                    <MapPin className="text-primary" size={20} /> Delivery Address
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="form-group md:col-span-2">
-                      <label className="form-label">Full Name</label>
-                      <input type="text" className="form-control" placeholder="John Doe" defaultValue="John Doe" />
-                    </div>
-                    <div className="form-group md:col-span-2">
-                      <label className="form-label">Address Line</label>
-                      <input type="text" className="form-control" placeholder="House No, Building, Street" defaultValue="A/42, City Center Apartments" />
-                    </div>
-                    <div className="form-group">
-                      <label className="form-label">Area/Locality</label>
-                      <select className="form-control">
-                        <option>City Center</option>
-                        <option>Sevoke Road</option>
-                        <option>Pradhan Nagar</option>
-                        <option>Hakim Para</option>
-                      </select>
-                    </div>
-                    <div className="form-group">
-                      <label className="form-label">Phone Number</label>
-                      <input type="text" className="form-control" placeholder="10-digit number" defaultValue="9876543210" />
-                    </div>
-                  </div>
-                </div>
+      <div className="checkout-container">
+        {/* Left Column */}
+        <div className="checkout-left-col">
 
-                <div className="card p-6">
-                  <h3 className="flex items-center gap-2 mb-4 text-lg border-b border-slate-100 pb-4">
-                    <CreditCard className="text-primary" size={20} /> Payment Method
-                  </h3>
-                  <div className="space-y-3">
-                    <label className="flex items-center gap-3 p-4 border border-primary rounded-lg bg-orange-50 cursor-pointer dark:bg-slate-800">
-                      <input type="radio" name="payment" defaultChecked className="w-4 h-4 text-primary" />
-                      <span className="font-medium">UPI / GPay / PhonePe</span>
-                    </label>
-                    <label className="flex items-center gap-3 p-4 border border-slate-200 dark:border-slate-700 rounded-lg cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800">
-                      <input type="radio" name="payment" className="w-4 h-4" />
-                      <span className="font-medium">Credit / Debit Card</span>
-                    </label>
-                    <label className="flex items-center gap-3 p-4 border border-slate-200 dark:border-slate-700 rounded-lg cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800">
-                      <input type="radio" name="payment" className="w-4 h-4" />
-                      <span className="font-medium">Cash on Delivery</span>
-                    </label>
-                  </div>
-                </div>
+          {/* Section 1: Delivery Details */}
+          <div className="checkout-section">
+            <div className="section-header-row">
+              <div className="step-circle active">1</div>
+              <h2 className="section-title-text">Delivery Details</h2>
+            </div>
+
+            <div className="map-placeholder">
+              <img
+                src="https://static.vecteezy.com/system/resources/previews/001/977/224/non_2x/gps-map-with-pin-illustration-free-vector.jpg" width="400px" height="300px"
+                alt="Map Background"
+                className="map-bg-img"
+              />
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/684/684908.png"
+                alt="Pin"
+                className="map-pin"
+                style={{ filter: 'hue-rotate(330deg) saturate(3) brightness(1.2)' }}
+              />
+              <button className="use-location-btn">
+                <Target size={16} /> Use Current Location
+              </button>
+            </div>
+
+            <div className="form-row">
+              <div className="input-group">
+                <label className="input-label">Full Name</label>
+                <input type="text" className="input-field" defaultValue={localStorage.getItem('userName') || "Rahul Sharma"} />
               </div>
-            )}
+            </div>
+
+            <div className="form-row">
+              <div className="input-group">
+                <label className="input-label">Street Address / House No.</label>
+                <input type="text" className="input-field" defaultValue="14/B, HakimPara" />
+              </div>
+            </div>
+
+            <div className="form-row two-cols">
+              <div className="input-group">
+                <label className="input-label">Landmark</label>
+                <input type="text" className="input-field" defaultValue="Near Kanchenjunga Stadium" />
+              </div>
+              <div className="input-group">
+                <label className="input-label">Phone Number</label>
+                <input type="text" className="input-field" defaultValue="+91 98765 43210" />
+              </div>
+            </div>
           </div>
 
-          <div className="lg:col-span-1">
-            <div className="card p-6 sticky top-24">
-              <h3 className="text-lg mb-4 pb-4 border-b border-slate-100 dark:border-slate-700">Order Summary</h3>
-              
-              <div className="space-y-3 mb-6">
-                <div className="flex justify-between text-secondary">
-                  <span>Item Total</span>
-                  <span>₹{subtotal}</span>
+          {/* Section 2: Payment Method */}
+          <div className="checkout-section">
+            <div className="section-header-row">
+              <div className="step-circle">2</div>
+              <h2 className="section-title-text">Payment Method</h2>
+            </div>
+
+            <div className="payment-methods-list">
+              <div
+                className={`payment-method-card ${paymentMethod === 'upi' ? 'active' : ''}`}
+                onClick={() => setPaymentMethod('upi')}
+              >
+                <div className="pm-left">
+                  <div className="pm-icon-box">
+                    <ScanLine size={20} />
+                  </div>
+                  <div className="pm-details">
+                    <span className="pm-title">UPI / QR Scan</span>
+                    <span className="pm-subtitle">Google Pay, PhonePe, Paytm</span>
+                  </div>
                 </div>
-                <div className="flex justify-between text-secondary">
-                  <span>Local Delivery Fee</span>
-                  <span>₹{deliveryFee}</span>
-                </div>
-                <div className="flex justify-between text-secondary text-sm">
-                  <span>Taxes</span>
-                  <span>₹0</span>
+                <div className="custom-radio">
+                  <div className="custom-radio-inner"></div>
                 </div>
               </div>
-              
-              <div className="flex justify-between items-center text-xl font-bold pt-4 border-t border-slate-100 dark:border-slate-700 mb-6">
-                <span>Total</span>
-                <span className="text-primary">₹{total}</span>
+
+              <div
+                className={`payment-method-card ${paymentMethod === 'card' ? 'active' : ''}`}
+                onClick={() => setPaymentMethod('card')}
+              >
+                <div className="pm-left">
+                  <div className="pm-icon-box">
+                    <CreditCard size={20} />
+                  </div>
+                  <div className="pm-details">
+                    <span className="pm-title">Credit / Debit Card</span>
+                    <span className="pm-subtitle">Visa, Mastercard, RuPay</span>
+                  </div>
+                </div>
+                <div className="custom-radio">
+                  <div className="custom-radio-inner"></div>
+                </div>
               </div>
 
-              {step === 'cart' ? (
-                <button 
-                  onClick={() => setStep('checkout')}
-                  className="btn btn-primary w-full"
-                >
-                  Proceed to Checkout <ArrowRight size={18} />
-                </button>
-              ) : (
-                <button 
-                  onClick={() => setStep('success')}
-                  className="btn btn-primary w-full"
-                >
-                  Place Order <CheckCircle size={18} />
-                </button>
-              )}
-
-              {step === 'checkout' && (
-                <button 
-                  onClick={() => setStep('cart')}
-                  className="btn w-full mt-3 text-secondary"
-                  style={{ backgroundColor: 'transparent', boxShadow: 'none' }}
-                >
-                  Back to Cart
-                </button>
-              )}
+              <div
+                className={`payment-method-card ${paymentMethod === 'cod' ? 'active' : ''}`}
+                onClick={() => setPaymentMethod('cod')}
+              >
+                <div className="pm-left">
+                  <div className="pm-icon-box">
+                    <Banknote size={20} />
+                  </div>
+                  <div className="pm-details">
+                    <span className="pm-title">Cash on Delivery</span>
+                    <span className="pm-subtitle">Pay when you receive the order</span>
+                  </div>
+                </div>
+                <div className="custom-radio">
+                  <div className="custom-radio-inner"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      )}
+
+        {/* Right Column */}
+        <div className="checkout-right-col">
+          <div className="checkout-section sticky top-6">
+            <div className="summary-header">
+              <h2 className="summary-title">Order Summary</h2>
+              <div className="item-count-badge">{totalItems} Items</div>
+            </div>
+
+            <div className="summary-items">
+              {cartItems.map((item, idx) => (
+                <div key={idx} className="summary-item">
+                  <div className="item-left">
+                    <div className="item-img-container">
+                      <img src={item.image} alt={item.name} className="item-img" />
+                      <div className="item-qty-badge">x{item.quantity}</div>
+                    </div>
+                    <div className="item-details">
+                      <span className="item-name">{item.name}</span>
+                      <span className="item-shop">{shops.find(s => s.id === item.shopId)?.name || "Golden Tips Tea Estate"}</span>
+                    </div>
+                  </div>
+                  <div className="item-price">₹{item.price * item.quantity}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="summary-totals">
+              <div className="totals-row">
+                <span>Subtotal</span>
+                <span>₹{subtotal}</span>
+              </div>
+              <div className="totals-row">
+                <span>Delivery Partner Fee</span>
+                <span>₹{deliveryFee}</span>
+              </div>
+
+              <div className="mission-checkbox-container" onClick={() => setSupportMission(!supportMission)}>
+                {supportMission ? (
+                  <CheckSquare size={20} color="#c2410c" />
+                ) : (
+                  <Square size={20} color="#cbd5e1" />
+                )}
+                <div className="mission-text">
+                  <span className="mission-title" style={{ color: supportMission ? '#1e293b' : '#64748b' }}>
+                    Support Local Mission (+₹10)
+                  </span>
+                  <span className="mission-subtitle">100% goes directly to the merchant's welfare fund.</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="dashed-divider"></div>
+
+            <div className="final-total-row">
+              <span className="final-total-label">Total to Pay</span>
+              <span className="final-total-amount">₹{total}</span>
+            </div>
+
+            <button className="place-order-btn" onClick={() => setStep('success')}>
+              Place Order securely <Lock size={18} />
+            </button>
+            <p className="terms-text">By placing this order, you agree to our Terms of Service.</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

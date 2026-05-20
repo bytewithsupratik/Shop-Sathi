@@ -1,9 +1,11 @@
 /* Landing Page Custom Styles */
 .landing-hero {
-  background: linear-gradient(135deg, #fdfbfb 0%, #e0f2fe 100%);
-  padding: 4rem 1rem 6rem;
+  background: radial-gradient(circle at 50% -20%, #ffedd5, transparent 70%),
+              linear-gradient(135deg, #fdfbfb 0%, #f0f9ff 100%);
+  padding: 5rem 1rem 7rem;
   text-align: center;
   position: relative;
+  overflow: hidden;
 }
 
 .live-badge {
@@ -96,18 +98,20 @@
 }
 
 .hero-search-btn {
-  background-color: #F26419;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
   color: white;
   border: none;
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 1.75rem;
   border-radius: 9999px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px 0 rgba(249, 115, 22, 0.39);
 }
 
 .hero-search-btn:hover {
-  background-color: #d95514;
+  transform: scale(1.05) translateY(-1px);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.5);
 }
 
 /* Category Icons */
@@ -261,20 +265,22 @@
 }
 
 .register-shop-card {
-  background-color: #6EE7B7; /* Aqua mint color */
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   border-radius: 1.5rem;
   padding: 2rem;
   height: 190px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: #064E3B;
+  color: #ffffff;
   text-decoration: none;
-  transition: transform 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
 }
 
 .register-shop-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
 }
 
 .register-shop-title {
@@ -403,17 +409,20 @@
 }
 
 .product-card {
-  background-color: white;
+  background-color: var(--bg-card);
+  backdrop-filter: blur(8px);
   border-radius: 1rem;
   overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 10px -1px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   padding: 0.75rem;
 }
 
 .product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transform: translateY(-6px);
+  box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1);
+  border-color: rgba(249, 115, 22, 0.3);
 }
 
 .product-img-wrapper {
