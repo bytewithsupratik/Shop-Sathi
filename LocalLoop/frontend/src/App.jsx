@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import { ShoppingCart, Bell, User, Search, Store, Home, MapPin, Moon, Sun } from 'lucide-react';
 import LandingPage from './pages/LandingPage';
 import ShopDiscovery from './pages/ShopDiscovery';
@@ -8,9 +8,17 @@ import SellerDashboard from './pages/SellerDashboard';
 import CartCheckout from './pages/CartCheckout';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import UserProfile from './pages/UserProfile';
 import './index.css';
 
 function App() {
+  const ProtectedRoute = ({ children }) => {
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    if (!isAuthenticated) {
+      return <Navigate to="/login" replace />;
+    }
+    return children;
+  };
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [cartCount, setCartCount] = useState(2);
   const location = useLocation();
@@ -66,7 +74,7 @@ function App() {
                   )}
                 </Link>
 
-                <Link to="/register" className="user-btn ml-2 hover:scale-110 transition-transform" style={{ transition: 'var(--transition)' }} title="Account">
+                <Link to="/profile" className="user-btn ml-2 hover:scale-110 transition-transform" style={{ transition: 'var(--transition)' }} title="Account">
                   <div style={{ background: 'var(--bg-secondary)', padding: '0.5rem', borderRadius: '50%', border: '1px solid var(--border-color)' }}>
                     <User size={20} style={{ color: 'var(--text-primary)' }} />
                   </div>
@@ -80,13 +88,14 @@ function App() {
 
       <main className="main-content">
         <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/shops" element={<ShopDiscovery />} />
-          <Route path="/product/:id" element={<ProductPage />} />
-          <Route path="/dashboard/*" element={<SellerDashboard />} />
-          <Route path="/cart" element={<CartCheckout />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/" element={<ProtectedRoute><LandingPage /></ProtectedRoute>} />
+          <Route path="/shops" element={<ProtectedRoute><ShopDiscovery /></ProtectedRoute>} />
+          <Route path="/product/:id" element={<ProtectedRoute><ProductPage /></ProtectedRoute>} />
+          <Route path="/dashboard/*" element={<ProtectedRoute><SellerDashboard /></ProtectedRoute>} />
+          <Route path="/cart" element={<ProtectedRoute><CartCheckout /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
         </Routes>
       </main>
 

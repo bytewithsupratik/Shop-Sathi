@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, MapPin, Heart, Plus, Store, ShoppingCart, Shirt, Monitor, Utensils, Brush, ArrowRight } from 'lucide-react';
+import { trendingProducts, featuredShops } from '../data/mockData';
 import './LandingPage.css';
 
 const LandingPage = () => {
@@ -101,35 +102,31 @@ const LandingPage = () => {
 
         <div className="featured-grid">
           {/* Main Card */}
-          <Link to="/shops" className="featured-main-card block">
-            <img
-              src="https://img.etimg.com/thumb/width-1200,height-1200,imgsize-3317972,resizemode-75,msid-107438198/industry/cons-products/fmcg/quick-commerce-platforms-surge-rocks-neighborhood-grocery-stores.jpg"
-              alt="Grocery Store"
-              className="featured-img"
-            />
-            <div className="verified-badge">
-              <span style={{ color: '#F59E0B' }}>✔</span> Verified Local
-            </div>
-            <div className="featured-main-overlay">
-              <p style={{ fontSize: '0.75rem', marginBottom: '0.25rem', opacity: 0.9 }}>Pradhan Nagar</p>
-              <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.25rem' }}>HillCart Grocery</h3>
-              <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>⭐ 4.9 (120 reviews) • Groceries</p>
-            </div>
-          </Link>
+          {featuredShops[0] && (
+            <Link to={`/product/${featuredShops[0].id}`} className="featured-main-card block">
+              <img src={featuredShops[0].image} alt={featuredShops[0].label} className="featured-img" />
+              <div className="verified-badge">
+                <span style={{ color: '#F59E0B' }}>✔</span> Verified Local
+              </div>
+              <div className="featured-main-overlay">
+                <p style={{ fontSize: '0.75rem', marginBottom: '0.25rem', opacity: 0.9 }}>{featuredShops[0].area}</p>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.25rem' }}>{featuredShops[0].label}</h3>
+                <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>{featuredShops[0].tagline}</p>
+              </div>
+            </Link>
+          )}
 
           {/* Right Column */}
           <div className="right-column">
-            <Link to="/shops" className="featured-sub-card block">
-              <img
-                src="https://content.jdmagicbox.com/v2/comp/darjeeling/n4/9999px354.x354.230625100348.p6n4/catalogue/the-tea-shoppe-nehru-road-darjeeling-tea-stalls-8v36d0ry70.jpg"
-                alt="Tea Corner"
-                className="featured-img"
-              />
-              <div className="featured-sub-overlay">
-                <p style={{ fontSize: '0.7rem', marginBottom: '0.1rem', opacity: 0.9 }}>City Center</p>
-                <h3 style={{ fontSize: '1.125rem', fontWeight: 'bold' }}>The Tea Shoppe</h3>
-              </div>
-            </Link>
+            {featuredShops[1] && (
+              <Link to={`/product/${featuredShops[1].id}`} className="featured-sub-card block">
+                <img src={featuredShops[1].image} alt={featuredShops[1].label} className="featured-img" />
+                <div className="featured-sub-overlay">
+                  <p style={{ fontSize: '0.7rem', marginBottom: '0.1rem', opacity: 0.9 }}>{featuredShops[1].area}</p>
+                  <h3 style={{ fontSize: '1.125rem', fontWeight: 'bold' }}>{featuredShops[1].label}</h3>
+                </div>
+              </Link>
+            )}
 
             <Link to="/register" className="register-shop-card">
               <Store size={28} className="mb-3" />
@@ -170,61 +167,20 @@ const LandingPage = () => {
         </div>
 
         <div className="trending-grid">
-          {/* Product 1 */}
-          <div className="product-card">
-            <div className="product-img-wrapper">
-              <img src="https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=400&q=80" alt="Tea" className="product-img" />
-              <button className="wishlist-btn"><Heart size={16} /></button>
+          {trendingProducts.map(product => (
+            <div className="product-card" key={product.id}>
+              <div className="product-img-wrapper">
+                <img src={product.image} alt={product.name} className="product-img" />
+                <button className="wishlist-btn"><Heart size={16} /></button>
+              </div>
+              <div className="product-shop">{product.shopName}</div>
+              <h3 className="product-name">{product.name}</h3>
+              <div className="product-bottom">
+                <div className="product-price">₹{product.price}</div>
+                <button className="add-btn"><Plus size={16} /></button>
+              </div>
             </div>
-            <div className="product-shop">Darjeeling Tea Corner</div>
-            <h3 className="product-name">Premium First Flush Tea</h3>
-            <div className="product-bottom">
-              <div className="product-price">₹850</div>
-              <button className="add-btn"><Plus size={16} /></button>
-            </div>
-          </div>
-
-          {/* Product 2 */}
-          <div className="product-card">
-            <div className="product-img-wrapper">
-              <img src="https://i0.wp.com/iimun.in/blog/wp-content/uploads/2025/10/Quels_sont_les_condiments_essentiels_avoir_dans_votre_garde-manger.jpg?fit=1080%2C650&ssl=1" alt="Spices" className="product-img" />
-              <button className="wishlist-btn"><Heart size={16} /></button>
-            </div>
-            <div className="product-shop">HillCart Grocery</div>
-            <h3 className="product-name">Organic Turmeric & Cumin</h3>
-            <div className="product-bottom">
-              <div className="product-price">₹240</div>
-              <button className="add-btn"><Plus size={16} /></button>
-            </div>
-          </div>
-
-          {/* Product 3 */}
-          <div className="product-card">
-            <div className="product-img-wrapper">
-              <img src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=400&q=80" alt="Bowl" className="product-img" />
-              <button className="wishlist-btn"><Heart size={16} /></button>
-            </div>
-            <div className="product-shop">Siliguri Arts</div>
-            <h3 className="product-name">Handcrafted Clay Bowl</h3>
-            <div className="product-bottom">
-              <div className="product-price">₹450</div>
-              <button className="add-btn"><Plus size={16} /></button>
-            </div>
-          </div>
-
-          {/* Product 4 */}
-          <div className="product-card">
-            <div className="product-img-wrapper">
-              <img src="https://images.unsplash.com/photo-1518843875459-f738682238a6?auto=format&fit=crop&w=400&q=80" alt="Greens" className="product-img" />
-              <button className="wishlist-btn"><Heart size={16} /></button>
-            </div>
-            <div className="product-shop">Green Valley Farm</div>
-            <h3 className="product-name">Farm Fresh Greens Bundle</h3>
-            <div className="product-bottom">
-              <div className="product-price">₹120</div>
-              <button className="add-btn"><Plus size={16} /></button>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
     </div>

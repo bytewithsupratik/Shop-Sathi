@@ -93,7 +93,7 @@ const CartCheckout = () => {
             <div className="form-row">
               <div className="input-group">
                 <label className="input-label">Full Name</label>
-                <input type="text" className="input-field" defaultValue={localStorage.getItem('userName') || "Rahul Sharma"} />
+                <input type="text" className="input-field" defaultValue={localStorage.getItem('userName') || ""} />
               </div>
             </div>
 

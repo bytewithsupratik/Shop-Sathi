@@ -15,6 +15,7 @@ const Register = () => {
     if (userName) {
       localStorage.setItem('userName', userName);
     }
+    localStorage.setItem('isAuthenticated', 'true');
     // Redirect based on role selection
     if (role === 'seller') {
       navigate('/dashboard');
@@ -32,7 +33,7 @@ const Register = () => {
           <div className="register-logo-icon">
             <Store size={24} />
           </div>
-          <span className="register-logo-text">Shop Saathi</span>
+          <span className="register-logo-text">Shop Sathi</span>
         </div>
 
         {/* Center Mockup */}
@@ -55,7 +56,7 @@ const Register = () => {
             <div className="relative z-10">
               <span className="testimonial-quote">"</span>
               <p className="testimonial-text">
-                "Joining LocalLoop transformed my small grocery. It brings the warmth of my neighborhood shop straight to my customers' phones."
+                "Joining Shop Sathi transformed my small grocery. It brings the warmth of my neighborhood shop straight to my customers' phones."
               </p>
               <div className="testimonial-author">
                 <img
@@ -81,7 +82,7 @@ const Register = () => {
           <div className="register-logo-icon">
             <Store size={24} />
           </div>
-          <span className="mobile-logo-text">LocalLoop</span>
+          <span className="mobile-logo-text">Shop Sathi</span>
         </div>
 
         <div className="form-wrapper">

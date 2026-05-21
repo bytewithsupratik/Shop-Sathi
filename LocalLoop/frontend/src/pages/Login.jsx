@@ -10,6 +10,7 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
+    localStorage.setItem('isAuthenticated', 'true');
     // Simulate login logic - just navigating for the UI demo
     if (email.includes('seller')) {
       navigate('/dashboard');
@@ -24,7 +25,7 @@ const Login = () => {
       <div className="login-left">
         <div className="login-card">
           <div className="login-header">
-            <h1 className="login-title">LocalLoop</h1>
+            <h1 className="login-title">Shop Sathi</h1>
             <p className="login-subtitle">Welcome back to the neighborhood.</p>
           </div>
 
@@ -93,7 +94,7 @@ const Login = () => {
           </div>
 
           <p className="register-prompt">
-            New to LocalLoop? <Link to="/register" className="register-link">Create an account</Link>
+            New to Shop Sathi? <Link to="/register" className="register-link">Create an account</Link>
           </p>
         </div>
       </div>
