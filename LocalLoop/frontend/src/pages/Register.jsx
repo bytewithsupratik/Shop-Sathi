@@ -12,9 +12,13 @@ const Register = () => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const userName = formData.get('userName');
-    if (userName) {
-      localStorage.setItem('userName', userName);
-    }
+    const userPhone = formData.get('userPhone');
+    const userAddress = formData.get('userAddress');
+    const userLandmark = formData.get('userLandmark');
+    if (userName) localStorage.setItem('userName', userName);
+    if (userPhone) localStorage.setItem('userPhone', userPhone);
+    if (userAddress) localStorage.setItem('userAddress', userAddress);
+    if (userLandmark) localStorage.setItem('userLandmark', userLandmark);
     localStorage.setItem('isAuthenticated', 'true');
     // Redirect based on role selection
     if (role === 'seller') {
@@ -149,9 +153,31 @@ const Register = () => {
               <label className="input-label">Phone Number</label>
               <input
                 type="tel"
+                name="userPhone"
                 placeholder="+91 98765 43210"
                 className="input-field"
                 required
+              />
+            </div>
+
+            <div className="input-group">
+              <label className="input-label">Delivery Address</label>
+              <input
+                type="text"
+                name="userAddress"
+                placeholder="e.g. 14/B, Hakim Para, Siliguri"
+                className="input-field"
+                required
+              />
+            </div>
+
+            <div className="input-group">
+              <label className="input-label">Landmark (Optional)</label>
+              <input
+                type="text"
+                name="userLandmark"
+                placeholder="e.g. Near Kanchenjunga Stadium"
+                className="input-field"
               />
             </div>
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import { ShoppingCart, Bell, User, Search, Store, Home, MapPin, Moon, Sun } from 'lucide-react';
+import { useCart } from './context/CartContext';
 import LandingPage from './pages/LandingPage';
 import ShopDiscovery from './pages/ShopDiscovery';
 import ProductPage from './pages/ProductPage';
@@ -20,7 +21,8 @@ function App() {
     return children;
   };
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [cartCount, setCartCount] = useState(2);
+  const { getCartCount } = useCart();
+  const cartCount = getCartCount();
   const location = useLocation();
 
   useEffect(() => {
@@ -69,7 +71,8 @@ function App() {
                 <Link to="/cart" className="icon-btn relative hover:scale-110 transition-transform" title="Cart">
                   <ShoppingCart size={20} />
                   {cartCount > 0 && (
-                    <span className="absolute flex items-center justify-center text-xs text-white font-bold rounded-full bg-primary-color">
+                    <span className="absolute flex items-center justify-center text-xs text-white font-bold rounded-full bg-primary-color" style={{ top: '-4px', right: '-6px', width: '20px', height: '20px', backgroundColor: '#f97316', fontSize: '0.65rem' }}>
+                      {cartCount}
                     </span>
                   )}
                 </Link>
@@ -96,6 +99,9 @@ function App() {
           <Route path="/dashboard/*" element={<ProtectedRoute><SellerDashboard /></ProtectedRoute>} />
           <Route path="/cart" element={<ProtectedRoute><CartCheckout /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
+          <Route path="/orders" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
+          <Route path="/addresses" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
+          <Route path="/wishlist" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
         </Routes>
       </main>
 

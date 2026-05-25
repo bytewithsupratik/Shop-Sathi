@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Lock, MapPin, Store, CheckSquare, Square, ScanLine, CreditCard, Banknote, Target, CheckCircle } from 'lucide-react';
-import { products, shops } from '../data/mockData';
+import { Lock, MapPin, Store, CheckSquare, Square, ScanLine, CreditCard, Banknote, Target, CheckCircle, Plus, Minus, Trash2, ShoppingBag } from 'lucide-react';
+import { shops } from '../data/mockData';
+import { useCart } from '../context/CartContext';
 import './CartCheckout.css';
 
 const CartCheckout = () => {
   const [step, setStep] = useState('checkout'); // checkout, success
-  const [cartItems, setCartItems] = useState([
-    { ...products[0], quantity: 1, name: "Premium Darjeeling First Flush", shopId: 1, price: 450, image: "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=400&q=80" },
-    { ...products[1], quantity: 2, name: "Wild Forest Honey", shopId: 2, price: 190, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtMxLwWVLPhoT9Ifqw9tcUU8aVtL745Dm2Xw&s" }
-  ]);
+  const { cartItems, updateQuantity, removeFromCart, clearCart, getCartCount } = useCart();
   const [paymentMethod, setPaymentMethod] = useState('upi');
   const [supportMission, setSupportMission] = useState(true);
+  const [orderTotal, setOrderTotal] = useState(0);
+  const [orderIdStr, setOrderIdStr] = useState('');
 
   // Scroll to top on mount
   useEffect(() => {
@@ -22,7 +22,29 @@ const CartCheckout = () => {
   const deliveryFee = 40;
   const missionFee = supportMission ? 10 : 0;
   const total = subtotal + (subtotal > 0 ? deliveryFee + missionFee : 0);
-  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const totalItems = getCartCount();
+
+  const handlePlaceOrder = () => {
+    const orderId = `SS-${Math.floor(100000 + Math.random() * 900000)}`;
+    setOrderIdStr(orderId);
+    setOrderTotal(total);
+    
+    // Save to user history
+    const existingOrders = JSON.parse(localStorage.getItem('userOrders') || '[]');
+    const newOrder = {
+      id: orderId,
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      amount: total,
+      status: 'out', // 'out' for out for delivery
+      statusLabel: 'OUT FOR DELIVERY',
+      shopName: cartItems[0]?.shopName || 'Multiple Shops',
+      iconType: 'truck'
+    };
+    localStorage.setItem('userOrders', JSON.stringify([newOrder, ...existingOrders]));
+    
+    setStep('success');
+    clearCart();
+  };
 
   if (step === 'success') {
     return (
@@ -38,14 +60,32 @@ const CartCheckout = () => {
           <div className="bg-slate-50 p-6 rounded-xl mb-8 border border-slate-200 text-left">
             <div className="flex justify-between mb-3 text-slate-600">
               <span>Order ID</span>
-              <span className="font-semibold text-slate-800">#LL-109482</span>
+              <span className="font-semibold text-slate-800">#{orderIdStr}</span>
             </div>
             <div className="flex justify-between text-slate-600">
               <span>Amount Paid</span>
-              <span className="font-semibold text-orange-600">₹{total}</span>
+              <span className="font-semibold text-orange-600">₹{orderTotal}</span>
             </div>
           </div>
           <Link to="/" className="place-order-btn" style={{ textDecoration: 'none' }}>Continue Shopping</Link>
+        </div>
+      </div>
+    );
+  }
+
+  // Empty cart state
+  if (cartItems.length === 0) {
+    return (
+      <div className="checkout-page flex flex-col items-center justify-center min-h-screen">
+        <div className="bg-white p-10 rounded-2xl shadow-lg max-w-md w-full text-center animate-fade-in">
+          <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <ShoppingBag size={44} className="text-slate-300" />
+          </div>
+          <h2 className="text-2xl font-bold mb-3 text-slate-800" style={{ fontFamily: 'Outfit' }}>Your cart is empty</h2>
+          <p className="text-slate-500 mb-8">
+            Looks like you haven't added anything yet. Explore shops and add your favorites!
+          </p>
+          <Link to="/shops" className="place-order-btn" style={{ textDecoration: 'none' }}>Browse Shops</Link>
         </div>
       </div>
     );
@@ -100,18 +140,18 @@ const CartCheckout = () => {
             <div className="form-row">
               <div className="input-group">
                 <label className="input-label">Street Address / House No.</label>
-                <input type="text" className="input-field" defaultValue="14/B, HakimPara" />
+                <input type="text" className="input-field" defaultValue={localStorage.getItem('userAddress') || ""} placeholder="e.g. 14/B, Hakim Para" />
               </div>
             </div>
 
             <div className="form-row two-cols">
               <div className="input-group">
                 <label className="input-label">Landmark</label>
-                <input type="text" className="input-field" defaultValue="Near Kanchenjunga Stadium" />
+                <input type="text" className="input-field" defaultValue={localStorage.getItem('userLandmark') || ""} placeholder="e.g. Near Kanchenjunga Stadium" />
               </div>
               <div className="input-group">
                 <label className="input-label">Phone Number</label>
-                <input type="text" className="input-field" defaultValue="+91 98765 43210" />
+                <input type="text" className="input-field" defaultValue={localStorage.getItem('userPhone') || ""} placeholder="+91 98765 43210" />
               </div>
             </div>
           </div>
@@ -190,8 +230,8 @@ const CartCheckout = () => {
             </div>
 
             <div className="summary-items">
-              {cartItems.map((item, idx) => (
-                <div key={idx} className="summary-item">
+              {cartItems.map((item) => (
+                <div key={item.id} className="summary-item">
                   <div className="item-left">
                     <div className="item-img-container">
                       <img src={item.image} alt={item.name} className="item-img" />
@@ -199,10 +239,34 @@ const CartCheckout = () => {
                     </div>
                     <div className="item-details">
                       <span className="item-name">{item.name}</span>
-                      <span className="item-shop">{shops.find(s => s.id === item.shopId)?.name || "Golden Tips Tea Estate"}</span>
+                      <span className="item-shop">{item.shopName || shops.find(s => s.id === item.shopId)?.name || "Shop"}</span>
                     </div>
                   </div>
-                  <div className="item-price">₹{item.price * item.quantity}</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', background: '#f1f5f9', borderRadius: '0.5rem', padding: '0.25rem' }}>
+                      <button
+                        onClick={() => updateQuantity(item.id, -1)}
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0.2rem', color: '#475569', display: 'flex' }}
+                      >
+                        <Minus size={14} />
+                      </button>
+                      <span style={{ fontWeight: '700', fontSize: '0.85rem', minWidth: '18px', textAlign: 'center' }}>{item.quantity}</span>
+                      <button
+                        onClick={() => updateQuantity(item.id, 1)}
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0.2rem', color: '#475569', display: 'flex' }}
+                      >
+                        <Plus size={14} />
+                      </button>
+                    </div>
+                    <div className="item-price">₹{item.price * item.quantity}</div>
+                    <button
+                      onClick={() => removeFromCart(item.id)}
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', display: 'flex', padding: '0.2rem' }}
+                      title="Remove item"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -239,7 +303,7 @@ const CartCheckout = () => {
               <span className="final-total-amount">₹{total}</span>
             </div>
 
-            <button className="place-order-btn" onClick={() => setStep('success')}>
+            <button className="place-order-btn" onClick={handlePlaceOrder}>
               Place Order securely <Lock size={18} />
             </button>
             <p className="terms-text">By placing this order, you agree to our Terms of Service.</p>

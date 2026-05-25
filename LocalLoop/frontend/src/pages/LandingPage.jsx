@@ -1,11 +1,20 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, MapPin, Heart, Plus, Store, ShoppingCart, Shirt, Monitor, Utensils, Brush, ArrowRight } from 'lucide-react';
+import { Search, MapPin, Heart, Plus, Store, ShoppingCart, Shirt, Monitor, Utensils, Brush, ArrowRight, Check } from 'lucide-react';
 import { trendingProducts, featuredShops } from '../data/mockData';
+import { useCart } from '../context/CartContext';
 import './LandingPage.css';
 
 const LandingPage = () => {
   const typeTarget = useRef(null);
+  const [addedId, setAddedId] = useState(null);
+  const { addToCart } = useCart();
+
+  const handleAdd = (product) => {
+    addToCart({ id: product.id, name: product.name, price: product.price, image: product.image, shopName: product.shopName });
+    setAddedId(product.id);
+    setTimeout(() => setAddedId(null), 1200);
+  };
 
   useEffect(() => {
     // Check if Typed is loaded globally from index.html CDN
@@ -177,7 +186,13 @@ const LandingPage = () => {
               <h3 className="product-name">{product.name}</h3>
               <div className="product-bottom">
                 <div className="product-price">₹{product.price}</div>
-                <button className="add-btn"><Plus size={16} /></button>
+                <button
+                  className="add-btn"
+                  onClick={() => handleAdd(product)}
+                  style={{ backgroundColor: addedId === product.id ? '#16a34a' : undefined, transition: 'background-color 0.3s' }}
+                >
+                  {addedId === product.id ? <Check size={16} /> : <Plus size={16} />}
+                </button>
               </div>
             </div>
           ))}

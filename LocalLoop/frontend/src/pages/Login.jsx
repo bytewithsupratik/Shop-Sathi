@@ -6,10 +6,23 @@ import './Login.css';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userPhone, setUserPhone] = useState('');
+  const [userAddress, setUserAddress] = useState('');
+  const [userLandmark, setUserLandmark] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
+    if (userPhone) localStorage.setItem('userPhone', userPhone);
+    if (userAddress) localStorage.setItem('userAddress', userAddress);
+    if (userLandmark) localStorage.setItem('userLandmark', userLandmark);
+    
+    // Simulate setting username from email prefix for demo
+    if (email && !localStorage.getItem('userName')) {
+      const prefix = email.split('@')[0];
+      localStorage.setItem('userName', prefix.charAt(0).toUpperCase() + prefix.slice(1));
+    }
+    
     localStorage.setItem('isAuthenticated', 'true');
     // Simulate login logic - just navigating for the UI demo
     if (email.includes('seller')) {
@@ -41,6 +54,50 @@ const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                />
+              </div>
+            </div>
+
+            <div className="login-input-group">
+              <label className="login-label">Phone Number</label>
+              <div className="login-input-wrapper">
+                <Smartphone className="login-input-icon" size={18} />
+                <input 
+                  type="tel" 
+                  placeholder="+91 98765 43210" 
+                  className="login-input"
+                  value={userPhone}
+                  onChange={(e) => setUserPhone(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="login-input-group">
+              <label className="login-label">Delivery Address</label>
+              <div className="login-input-wrapper">
+                <input 
+                  type="text" 
+                  placeholder="e.g. 14/B, Hakim Para, Siliguri" 
+                  className="login-input"
+                  style={{ paddingLeft: '1rem' }}
+                  value={userAddress}
+                  onChange={(e) => setUserAddress(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="login-input-group">
+              <label className="login-label">Landmark (Optional)</label>
+              <div className="login-input-wrapper">
+                <input 
+                  type="text" 
+                  placeholder="e.g. Near Kanchenjunga Stadium" 
+                  className="login-input"
+                  style={{ paddingLeft: '1rem' }}
+                  value={userLandmark}
+                  onChange={(e) => setUserLandmark(e.target.value)}
                 />
               </div>
             </div>
